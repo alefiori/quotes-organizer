@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "quotesorganizer2d43fd0c": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d2juxw5c6ts540",
+          "type": "cicd"
+        }
       }
     }
   }
