@@ -20,6 +20,9 @@
           "appId": "d2juxw5c6ts540",
           "type": "cicd"
         }
+      },
+      "api": {
+        "quotesAPI": {}
       }
     }
   }

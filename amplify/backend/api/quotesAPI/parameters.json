@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "quotesAPI",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authquotesorganizer2d43fd0c",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+type Quote @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  content: String!
+  author: String
+}
