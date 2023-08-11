@@ -1,27 +1,32 @@
-# React + TypeScript + Vite
+# Quotes Organizer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Content
 
-Currently, two official plugins are available:
+Application to keep track and organize quotes from around the web.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Prerequisites
 
-## Expanding the ESLint configuration
+- `nvm` to manage node versions (https://github.com/nvm-sh/nvm#installing-and-updating)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## How to run
 
-- Configure the top-level `parserOptions` property like this:
+- `nvm install && nvm use` to install and use the right node version (LTS)
+- `npm i -g pnpm` to install pnpm globally (if you don't have it already)
+- `pnpm i` to install dependencies
+- `pnpm dev` to run the application locally
+- `pnpm test` to run unit tests
+- `pnpm build` to run the build
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+## Tech Stack
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- `pnpm` as package manager
+- `typescript` as language
+- `vite` as bundler
+- `swc` as compiler
+- `react` as framework
+- `vitest` as unit testing framework
+- `testing-library` as components testing utilities
+- `eslint` as linter
+- `prettier` as code formatter
+- `sass` as css preprocessor
+- `husky` as git hooks manager
