@@ -30,3 +30,4 @@ Application to keep track and organize quotes from around the web.
 - `prettier` as code formatter
 - `sass` as css preprocessor
 - `husky` as git hooks manager
+- `aws-amplify` as cloud services provider for authentication and api
