@@ -10,4 +10,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './tests-setup.ts',
   },
+  define: {
+    global: 'window',
+  },
 })
