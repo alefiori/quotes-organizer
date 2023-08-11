@@ -18,5 +18,8 @@
     "activityBar.inactiveForeground": "#6C6E75",
     "activityBarBadge.background": "#FFCC01",
     "activityBarBadge.foreground": "#000000"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
