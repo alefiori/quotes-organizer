@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { QuoteCard } from '..'
-import { Quote } from '../../types/API'
+import { Quote } from '../../types'
 
 type QuotesListProps = {
   quotes: Array<Quote>

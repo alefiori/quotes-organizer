@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { AddButton, AddModal, QuotesList } from './components'
-import { Quote } from './types/API'
+import { CreateQuoteInput, Quote } from './types'
 import { quotesApi } from './utils'
 
 export const App: FC = () => {
@@ -21,6 +21,16 @@ export const App: FC = () => {
     }
   }
 
+  const addQuote = async (quote: CreateQuoteInput): Promise<void> => {
+    try {
+      await quotesApi.addQuote(quote)
+      fetchQuotes()
+      setAddMode(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <>
       <main>
@@ -28,7 +38,7 @@ export const App: FC = () => {
         <AddButton onClick={() => setAddMode(true)} />
         {quotes && <QuotesList quotes={quotes} />}
       </main>
-      {addMode && <AddModal onCancel={() => setAddMode(false)} />}
+      {addMode && <AddModal onCancel={() => setAddMode(false)} onConfirm={addQuote} />}
     </>
   )
 }
