@@ -1,0 +1,33 @@
+html {
+  font-size: 62.5%; // 1rem = 10px
+}
+
+body {
+  font-size: $default-font-size;
+  font-family: $default-font-family;
+  font-weight: $default-font-weight;
+  line-height: $default-line-height;
+  color: $color-black;
+  background-color: $color-white;
+  box-sizing: border-box;
+  transition: background-color 0.5s;
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+main {
+  max-width: $grid-width;
+  margin: 0 auto 5rem;
+  min-height: 100vh;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+}

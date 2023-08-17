@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react'
+import { AddButton, AddModal, QuotesList } from './components'
 import { Quote } from './types/API'
 import { quotesApi } from './utils'
-import { AddButton, AddModal, QuotesList } from './components'
 
 export const App: FC = () => {
   const [quotes, setQuotes] = useState<Array<Quote>>([])
@@ -10,6 +10,8 @@ export const App: FC = () => {
   useEffect(() => {
     fetchQuotes()
   }, [])
+
+  useEffect(() => document.body.classList[addMode ? 'add' : 'remove']('add-mode'), [addMode])
 
   const fetchQuotes = async (): Promise<void> => {
     try {
@@ -20,11 +22,13 @@ export const App: FC = () => {
   }
 
   return (
-    <main>
-      <h1>Quotes Organizer</h1>
-      <AddButton onClick={() => setAddMode(true)} />
-      {quotes && <QuotesList quotes={quotes} />}
-      {addMode && <AddModal />}
-    </main>
+    <>
+      <main>
+        <h1>Quotes Organizer</h1>
+        <AddButton onClick={() => setAddMode(true)} />
+        {quotes && <QuotesList quotes={quotes} />}
+      </main>
+      {addMode && <AddModal onCancel={() => setAddMode(false)} />}
+    </>
   )
 }

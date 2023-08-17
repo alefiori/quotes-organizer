@@ -1,0 +1,16 @@
+.add-modal {
+  @include absCenter;
+  width: 80rem;
+  height: 50rem;
+  border: 1px solid $color-black;
+  background-color: $color-white;
+  &__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid $color-black;
+    text-align: center;
+  }
+}
