@@ -9,9 +9,18 @@ type QuotesListProps = {
 export const QuotesList: FC<QuotesListProps> = ({ quotes }) => {
   return (
     <section>
-      {quotes.map((quote, index) => (
-        <QuoteCard key={index} {...quote} />
-      ))}
+      <h2>List of Quotes</h2>
+      {quotes.length ? (
+        <ul>
+          {quotes.map((quote, index) => (
+            <li key={index}>
+              <QuoteCard {...quote} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No quotes found</p>
+      )}
     </section>
   )
 }

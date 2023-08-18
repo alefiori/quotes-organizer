@@ -7,9 +7,9 @@ type QuoteCardProps = {
 
 export const QuoteCard: FC<QuoteCardProps> = ({ author, content }) => {
   return (
-    <article>
-      <p>{content}</p>
-      {author && <p>{author}</p>}
+    <article className="quote-card">
+      <p className="quote-card__content">{content}</p>
+      {author && <p className="quote-card__author">{author}</p>}
     </article>
   )
 }

@@ -27,8 +27,11 @@ export const AddModal: FC<AddModalProps> = ({ onCancel, onConfirm }) => {
         <label htmlFor="add-form-author">Author</label>
         <input id="add-form-author" type="text" value={author} onChange={({ target: { value } }) => setAuthor(value)} />
       </form>
-      <button onClick={onCancel}>Cancel</button>
+      <button className="add-modal__cancel" onClick={onCancel}>
+        Cancel
+      </button>
       <button
+        className="add-modal__add"
         disabled={!content.trim()}
         onClick={() => onConfirm({ content, author: author.trim() ? author : null })}
         type="submit"
