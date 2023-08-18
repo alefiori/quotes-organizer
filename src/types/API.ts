@@ -75,6 +75,123 @@ export type DeleteQuoteInput = {
   id: string
 }
 
+export type SearchableQuoteFilterInput = {
+  id?: SearchableIDFilterInput | null
+  content?: SearchableStringFilterInput | null
+  author?: SearchableStringFilterInput | null
+  createdAt?: SearchableStringFilterInput | null
+  updatedAt?: SearchableStringFilterInput | null
+  and?: Array<SearchableQuoteFilterInput | null> | null
+  or?: Array<SearchableQuoteFilterInput | null> | null
+  not?: SearchableQuoteFilterInput | null
+}
+
+export type SearchableIDFilterInput = {
+  ne?: string | null
+  gt?: string | null
+  lt?: string | null
+  gte?: string | null
+  lte?: string | null
+  eq?: string | null
+  match?: string | null
+  matchPhrase?: string | null
+  matchPhrasePrefix?: string | null
+  multiMatch?: string | null
+  exists?: boolean | null
+  wildcard?: string | null
+  regexp?: string | null
+  range?: Array<string | null> | null
+}
+
+export type SearchableStringFilterInput = {
+  ne?: string | null
+  gt?: string | null
+  lt?: string | null
+  gte?: string | null
+  lte?: string | null
+  eq?: string | null
+  match?: string | null
+  matchPhrase?: string | null
+  matchPhrasePrefix?: string | null
+  multiMatch?: string | null
+  exists?: boolean | null
+  wildcard?: string | null
+  regexp?: string | null
+  range?: Array<string | null> | null
+}
+
+export type SearchableQuoteSortInput = {
+  field?: SearchableQuoteSortableFields | null
+  direction?: SearchableSortDirection | null
+}
+
+export enum SearchableQuoteSortableFields {
+  id = 'id',
+  content = 'content',
+  author = 'author',
+  createdAt = 'createdAt',
+  updatedAt = 'updatedAt',
+}
+
+export enum SearchableSortDirection {
+  asc = 'asc',
+  desc = 'desc',
+}
+
+export type SearchableQuoteAggregationInput = {
+  name: string
+  type: SearchableAggregateType
+  field: SearchableQuoteAggregateField
+}
+
+export enum SearchableAggregateType {
+  terms = 'terms',
+  avg = 'avg',
+  min = 'min',
+  max = 'max',
+  sum = 'sum',
+}
+
+export enum SearchableQuoteAggregateField {
+  id = 'id',
+  content = 'content',
+  author = 'author',
+  createdAt = 'createdAt',
+  updatedAt = 'updatedAt',
+}
+
+export type SearchableQuoteConnection = {
+  __typename: 'SearchableQuoteConnection'
+  items: Array<Quote | null>
+  nextToken?: string | null
+  total?: number | null
+  aggregateItems: Array<SearchableAggregateResult | null>
+}
+
+export type SearchableAggregateResult = {
+  __typename: 'SearchableAggregateResult'
+  name: string
+  result?: SearchableAggregateGenericResult | null
+}
+
+export type SearchableAggregateGenericResult = SearchableAggregateScalarResult | SearchableAggregateBucketResult
+
+export type SearchableAggregateScalarResult = {
+  __typename: 'SearchableAggregateScalarResult'
+  value: number
+}
+
+export type SearchableAggregateBucketResult = {
+  __typename: 'SearchableAggregateBucketResult'
+  buckets?: Array<SearchableAggregateBucketResultItem | null> | null
+}
+
+export type SearchableAggregateBucketResultItem = {
+  __typename: 'SearchableAggregateBucketResultItem'
+  key: string
+  doc_count: number
+}
+
 export type ModelQuoteFilterInput = {
   id?: ModelIDInput | null
   content?: ModelStringInput | null
@@ -192,6 +309,52 @@ export type DeleteQuoteMutation = {
     createdAt: string
     updatedAt: string
     owner?: string | null
+  } | null
+}
+
+export type SearchQuotesQueryVariables = {
+  filter?: SearchableQuoteFilterInput | null
+  sort?: Array<SearchableQuoteSortInput | null> | null
+  limit?: number | null
+  nextToken?: string | null
+  from?: number | null
+  aggregates?: Array<SearchableQuoteAggregationInput | null> | null
+}
+
+export type SearchQuotesQuery = {
+  searchQuotes?: {
+    __typename: 'SearchableQuoteConnection'
+    items: Array<{
+      __typename: 'Quote'
+      id: string
+      content: string
+      author?: string | null
+      createdAt: string
+      updatedAt: string
+      owner?: string | null
+    }>
+    nextToken?: string | null
+    total?: number | null
+    aggregateItems: Array<{
+      __typename: 'SearchableAggregateResult'
+      name: string
+      result:
+        | (
+            | {
+                __typename: 'SearchableAggregateScalarResult'
+                value: number
+              }
+            | {
+                __typename: 'SearchableAggregateBucketResult'
+                buckets?: Array<{
+                  __typename: string
+                  key: string
+                  doc_count: number
+                } | null> | null
+              }
+          )
+        | null
+    } | null>
   } | null
 }
 

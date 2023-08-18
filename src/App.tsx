@@ -23,8 +23,8 @@ export const App: FC = () => {
 
   const addQuote = async (quote: CreateQuoteInput): Promise<void> => {
     try {
-      await quotesApi.addQuote(quote)
-      fetchQuotes()
+      const newQuote = await quotesApi.addQuote(quote)
+      setQuotes([newQuote, ...quotes])
       setAddMode(false)
     } catch (error) {
       console.log(error)

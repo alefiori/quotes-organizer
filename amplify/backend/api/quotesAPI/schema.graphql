@@ -1,4 +1,4 @@
-type Quote @model @auth(rules: [{ allow: owner }]) {
+type Quote @model @auth(rules: [{ allow: owner }]) @searchable {
   id: ID!
   content: String!
   author: String
