@@ -19,6 +19,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@aws-amplify/api": "^5.4.1",
     "@aws-amplify/ui-react": "^5.1.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^14.0.0",
@@ -50,7 +51,7 @@
       "prettier --write",
       "eslint --fix"
     ],
-    "src/styles/**/*.{scss}": [
+    "src/styles/**/*.scss": [
       "prettier --write"
     ]
   }

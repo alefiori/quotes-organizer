@@ -1,0 +1,9 @@
+.quotes-list {
+  &__title {
+    margin-bottom: 2rem;
+  }
+  &__list {
+    list-style: none;
+    @extend .grid;
+  }
+}
