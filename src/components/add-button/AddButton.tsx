@@ -5,5 +5,10 @@ type AddButtonProps = {
 }
 
 export const AddButton: FC<AddButtonProps> = ({ onClick }) => {
-  return <button onClick={onClick}>Add</button>
+  return (
+    <button className="add-button" onClick={onClick}>
+      <span>Add Quote</span>
+      <span className="material-symbols-outlined">add</span>
+    </button>
+  )
 }
