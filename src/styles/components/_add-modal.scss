@@ -26,6 +26,10 @@
       border-radius: 1rem;
       margin-bottom: 1.6rem;
       padding: 0.8rem;
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+      }
     }
     textarea {
       height: 12rem;

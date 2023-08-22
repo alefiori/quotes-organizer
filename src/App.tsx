@@ -1,10 +1,11 @@
 import { FC, useEffect, useState } from 'react'
-import { AddButton, AddModal, QuotesList } from './components'
+import { AddButton, AddModal, QuotesList, SearchBar } from './components'
 import { CreateQuoteInput, Quote } from './types'
 import { quotesApi } from './utils'
 
 export const App: FC = () => {
   const [quotes, setQuotes] = useState<Array<Quote>>([])
+  const [search, setSearch] = useState<string>('')
   const [addMode, setAddMode] = useState<boolean>(false)
 
   useEffect(() => {
@@ -35,8 +36,9 @@ export const App: FC = () => {
     <>
       <main>
         <h1>Quotes Organizer</h1>
+        <SearchBar onSearch={(search) => setSearch(search)} />
         <AddButton onClick={() => setAddMode(true)} />
-        {quotes && <QuotesList quotes={quotes} />}
+        {quotes && <QuotesList quotes={quotes} search={search} />}
       </main>
       {addMode && <AddModal onCancel={() => setAddMode(false)} onConfirm={addQuote} />}
     </>

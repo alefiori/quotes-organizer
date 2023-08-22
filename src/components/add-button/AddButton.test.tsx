@@ -1,5 +1,5 @@
-import { render } from '@testing-library/react'
-import { describe, it, vi } from 'vitest'
+import { fireEvent, render } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
 import { AddButton } from '..'
 
 describe('AddButton component', () => {
@@ -11,7 +11,7 @@ describe('AddButton component', () => {
     const onClick = vi.fn()
     const { container } = render(<AddButton onClick={onClick} />)
     const addButton = container.querySelector('button')!
-    addButton.click()
+    fireEvent.click(addButton)
     expect(onClick).toHaveBeenCalledOnce()
   })
 })

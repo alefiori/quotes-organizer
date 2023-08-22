@@ -3,8 +3,7 @@ import { CreateQuoteInput } from '../../types'
 
 type AddModalProps = {
   onCancel: () => void
-  // eslint-disable-next-line no-unused-vars
-  onConfirm: (quote: Omit<CreateQuoteInput, 'id'>) => Promise<void>
+  onConfirm: (_: Omit<CreateQuoteInput, 'id'>) => void
 }
 
 export const AddModal: FC<AddModalProps> = ({ onCancel, onConfirm }) => {

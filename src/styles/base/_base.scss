@@ -31,3 +31,33 @@ button {
   all: unset;
   cursor: pointer;
 }
+
+:root,
+[data-amplify-theme] {
+  --amplify-font-sizes-xxxs: 0.6rem;
+  --amplify-font-sizes-xxs: 0.8rem;
+  --amplify-font-sizes-xs: 1.2rem;
+  --amplify-font-sizes-small: 1.4rem;
+  --amplify-font-sizes-medium: 1.6rem;
+  --amplify-font-sizes-large: 2rem;
+  --amplify-font-sizes-xl: 2.4rem;
+  --amplify-font-sizes-xxl: 3.2rem;
+  --amplify-font-sizes-xxxl: 4rem;
+  --amplify-font-sizes-xxxxl: 4.8rem;
+  --amplify-space-xxxs: 0.4rem;
+  --amplify-space-xxs: 0.6rem;
+  --amplify-space-xs: 0.8rem;
+  --amplify-space-small: 1.2rem;
+  --amplify-space-medium: 1.6rem;
+  --amplify-space-large: 2.4rem;
+  --amplify-space-xl: 3.2rem;
+  --amplify-space-xxl: 4.8rem;
+  --amplify-space-xxxl: 7.2rem;
+  --amplify-components-authenticator-max-width: 96rem;
+  --amplify-components-authenticator-container-width-max: 48rem;
+  --amplify-colors-neutral-90: var(--color-black);
+  --amplify-colors-teal-10: var(--color-primary-lightest);
+  --amplify-colors-teal-80: var(--color-primary);
+  --amplify-colors-teal-90: var(--color-primary-dark);
+  --amplify-colors-teal-100: var(--color-primary-dark);
+}
