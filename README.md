@@ -16,6 +16,7 @@ Application to keep track and organize quotes from around the web.
 - `pnpm dev` to run the application locally
 - `pnpm test` to run unit tests
 - `pnpm build` to run the build
+- `pnpm e2e` to run e2e tests 
 
 ## Tech Stack
 
@@ -31,3 +32,4 @@ Application to keep track and organize quotes from around the web.
 - `sass` as css preprocessor
 - `husky` as git hooks manager
 - `aws-amplify` as cloud services provider for authentication and api
+- `playwright` as e2e testing framework
