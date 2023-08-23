@@ -3,9 +3,10 @@ import { FC } from 'react'
 type QuoteCardProps = {
   author?: string | null
   content: string
+  onCopy: () => void
 }
 
-export const QuoteCard: FC<QuoteCardProps> = ({ author, content }) => {
+export const QuoteCard: FC<QuoteCardProps> = ({ author, content, onCopy }) => {
   return (
     <article className="quote-card">
       <p className="quote-card__content" title={content}>
@@ -16,6 +17,9 @@ export const QuoteCard: FC<QuoteCardProps> = ({ author, content }) => {
           {author}
         </p>
       )}
+      <button className="material-symbols-outlined quote-card__copy" title="copy" onClick={onCopy}>
+        content_copy
+      </button>
     </article>
   )
 }
