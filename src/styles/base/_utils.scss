@@ -1,6 +1,10 @@
 .add-mode {
   background-color: rgba($color-black, 0.3);
+  overflow: hidden;
   main {
     pointer-events: none;
+  }
+  input {
+    background-color: rgba($color-white, 0.1);
   }
 }

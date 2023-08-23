@@ -11,29 +11,43 @@ export const AddModal: FC<AddModalProps> = ({ onCancel, onConfirm }) => {
   const [author, setAuthor] = useState('')
 
   return (
-    <article className="add-modal">
-      <button className="add-modal__close" onClick={onCancel}>
+    <article className="add-modal" data-testid="add-modal">
+      <button className="add-modal__close" data-testid="add-modal-close" onClick={onCancel}>
         <span className="material-symbols-outlined">close</span>
       </button>
-      <form className="add-modal__form">
+      <h2 className="add-modal__title">Add a new quote</h2>
+      <form className="add-modal__form" data-testid="add-modal-form">
         <label htmlFor="add-form-content">Content*</label>
         <textarea
           required
           id="add-form-content"
+          placeholder="Write or paste your quote here..."
           value={content}
           onChange={({ target: { value } }) => setContent(value)}
         />
         <label htmlFor="add-form-author">Author</label>
-        <input id="add-form-author" type="text" value={author} onChange={({ target: { value } }) => setAuthor(value)} />
+        <input
+          id="add-form-author"
+          placeholder="Write or paste the author here..."
+          type="text"
+          value={author}
+          onChange={({ target: { value } }) => setAuthor(value)}
+        />
       </form>
       <div className="add-modal__actions">
-        <button id="add-modal-cancel" className="add-modal__actions__button" onClick={onCancel}>
+        <button
+          id="add-modal-cancel"
+          className="add-modal__actions__button"
+          data-testid="add-modal-cancel"
+          onClick={onCancel}
+        >
           <span>Cancel</span>
           <span className="material-symbols-outlined">cancel</span>
         </button>
         <button
           id="add-modal-add"
           className="add-modal__actions__button"
+          data-testid="add-modal-add"
           disabled={!content.trim()}
           onClick={() => onConfirm({ content, author: author.trim() ? author : null })}
           type="submit"

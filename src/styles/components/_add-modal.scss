@@ -16,6 +16,10 @@
       color: $color-primary;
     }
   }
+  &__title {
+    text-align: center;
+    margin-bottom: 2.4rem;
+  }
   &__form {
     display: flex;
     flex-direction: column;
