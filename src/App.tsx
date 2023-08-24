@@ -1,15 +1,17 @@
 import { FC, useEffect, useState } from 'react'
 import { AddButton, AddModal, QuotesList, SearchBar } from './components'
-import { CreateQuoteInput, Quote } from './types'
-import { quotesApi } from './utils'
+import { CreateQuoteInput, Quote, SuggestedQuote } from './types'
+import { quotesApi, suggestedQuoteApi } from './utils'
 
 export const App: FC = () => {
   const [quotes, setQuotes] = useState<Array<Quote>>([])
+  const [suggestedQuote, setSuggestedQuote] = useState<SuggestedQuote>()
   const [search, setSearch] = useState<string>('')
   const [addMode, setAddMode] = useState<boolean>(false)
 
   useEffect(() => {
     fetchQuotes()
+    fetchSuggestedQuote()
   }, [])
 
   useEffect(() => document.body.classList[addMode ? 'add' : 'remove']('add-mode'), [addMode])
@@ -17,6 +19,14 @@ export const App: FC = () => {
   const fetchQuotes = async (): Promise<void> => {
     try {
       setQuotes(await quotesApi.getQuotes())
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const fetchSuggestedQuote = async (): Promise<void> => {
+    try {
+      setSuggestedQuote(await suggestedQuoteApi.getQuote())
     } catch (error) {
       console.log(error)
     }
@@ -31,6 +41,10 @@ export const App: FC = () => {
       console.log(error)
     }
   }
+  const addSuggestedQuote = ({ author, quote: content }: SuggestedQuote): void => {
+    addQuote({ author, content })
+    fetchSuggestedQuote()
+  }
 
   return (
     <>
@@ -38,7 +52,14 @@ export const App: FC = () => {
         <h1>Quotes Organizer</h1>
         <SearchBar onSearch={(search) => setSearch(search)} />
         <AddButton onClick={() => setAddMode(true)} />
-        {quotes && <QuotesList quotes={quotes} search={search} />}
+        {quotes && (
+          <QuotesList
+            quotes={quotes}
+            search={search}
+            suggestedQuote={suggestedQuote}
+            addSuggested={addSuggestedQuote}
+          />
+        )}
       </main>
       {addMode && <AddModal onCancel={() => setAddMode(false)} onConfirm={addQuote} />}
     </>

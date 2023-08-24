@@ -25,11 +25,31 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
-  &__copy {
+  &__action {
     position: absolute;
-    right: 0;
     bottom: 0;
     cursor: pointer;
     padding: 0.8rem;
+    &--copy {
+      right: 0;
+    }
+    &--add {
+      right: 3.2rem;
+    }
   }
+  &__suggestion {
+    padding: 0.8rem;
+    position: absolute;
+    top: -1.7rem;
+    right: 0;
+    background-color: $color-primary;
+    border-radius: 1rem;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    color: $color-white;
+  }
+}
+
+.add-mode .quote-card__suggestion {
+  opacity: 0.8;
 }

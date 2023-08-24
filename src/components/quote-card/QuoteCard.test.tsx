@@ -18,14 +18,32 @@ describe('QuoteCard component', () => {
 
   it('should render the copy button', () => {
     const { container } = render(<QuoteCard content="__CONTENT__" onCopy={vi.fn()} />)
-    expect(container.querySelector('.quote-card__copy')).toBeInTheDocument()
+    expect(container.querySelector('.quote-card__action--copy')).toBeInTheDocument()
   })
 
   it('should call the onCopy callback when the copy button is clicked', () => {
     const onCopy = vi.fn()
     const { container } = render(<QuoteCard content="__CONTENT__" onCopy={onCopy} />)
-    const copyButton = container.querySelector('.quote-card__copy')!
+    const copyButton = container.querySelector('.quote-card__action--copy')!
     fireEvent.click(copyButton)
     expect(onCopy).toHaveBeenCalled()
+  })
+
+  it('should render the add button if onAdd is given', () => {
+    const { container } = render(<QuoteCard content="__CONTENT__" onCopy={vi.fn()} onAdd={vi.fn()} />)
+    expect(container.querySelector('.quote-card__action--add')).toBeInTheDocument()
+  })
+
+  it('should not render the add button if onAdd is not given', () => {
+    const { container } = render(<QuoteCard content="__CONTENT__" onCopy={vi.fn()} />)
+    expect(container.querySelector('.quote-card__action--add')).not.toBeInTheDocument()
+  })
+
+  it('should call the onAdd callback when the add button is clicked', () => {
+    const onAdd = vi.fn()
+    const { container } = render(<QuoteCard content="__CONTENT__" onCopy={vi.fn()} onAdd={onAdd} />)
+    const addButton = container.querySelector('.quote-card__action--add')!
+    fireEvent.click(addButton)
+    expect(onAdd).toHaveBeenCalled()
   })
 })
