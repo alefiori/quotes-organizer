@@ -27,15 +27,27 @@ vi.mock('../../utils', () => ({
 
 describe('QuotesList component', () => {
   it('should render a title', () => {
-    const { container } = render(<QuotesList addSuggested={vi.fn()} search="" quotes={[]} />)
+    const { container } = render(
+      <QuotesList search="" quotes={[]} addSuggested={vi.fn()} changeSuggested={vi.fn()} deleteQuote={vi.fn()} />,
+    )
     expect(container.querySelector('h2')).toHaveTextContent('List of Quotes')
   })
   it('should render a message when no quotes are given', () => {
-    const { container } = render(<QuotesList addSuggested={vi.fn()} search="" quotes={[]} />)
+    const { container } = render(
+      <QuotesList search="" quotes={[]} addSuggested={vi.fn()} changeSuggested={vi.fn()} deleteQuote={vi.fn()} />,
+    )
     expect(container.querySelector('p')).toHaveTextContent('No quotes found')
   })
   it('should render a list of QuoteCard components based to given quotes', () => {
-    const { container } = render(<QuotesList addSuggested={vi.fn()} search="" quotes={mockQuotes} />)
+    const { container } = render(
+      <QuotesList
+        search=""
+        quotes={mockQuotes}
+        addSuggested={vi.fn()}
+        changeSuggested={vi.fn()}
+        deleteQuote={vi.fn()}
+      />,
+    )
     const elements = container.querySelectorAll('li')
     expect(elements.length).toBe(mockQuotes.length)
     for (const element of elements) {
@@ -43,9 +55,25 @@ describe('QuotesList component', () => {
     }
   })
   it('should call searchFilter with given search and quotes', () => {
-    render(<QuotesList addSuggested={vi.fn()} search="__QUOTE__" quotes={mockQuotes} />)
+    render(
+      <QuotesList
+        search="__QUOTE__"
+        quotes={mockQuotes}
+        addSuggested={vi.fn()}
+        changeSuggested={vi.fn()}
+        deleteQuote={vi.fn()}
+      />,
+    )
     expect(searchFilter).toHaveBeenCalledWith(mockQuotes, '__QUOTE__')
-    render(<QuotesList addSuggested={vi.fn()} search="" quotes={mockQuotes} />)
+    render(
+      <QuotesList
+        search=""
+        quotes={mockQuotes}
+        addSuggested={vi.fn()}
+        changeSuggested={vi.fn()}
+        deleteQuote={vi.fn()}
+      />,
+    )
     expect(searchFilter).toHaveBeenCalledWith(mockQuotes, '')
   })
 })

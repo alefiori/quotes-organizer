@@ -4,10 +4,12 @@ type QuoteCardProps = {
   author?: string | null
   content: string
   onAdd?: () => void
+  onChange?: () => void
   onCopy: () => void
+  onDelete: () => void
 }
 
-export const QuoteCard: FC<QuoteCardProps> = ({ author, content, onAdd, onCopy }) => {
+export const QuoteCard: FC<QuoteCardProps> = ({ author, content, onAdd, onChange, onCopy, onDelete }) => {
   return (
     <article className="quote-card">
       <p className="quote-card__content" title={content}>
@@ -28,8 +30,24 @@ export const QuoteCard: FC<QuoteCardProps> = ({ author, content, onAdd, onCopy }
           >
             add
           </button>
+          {onChange && (
+            <button
+              className="material-symbols-outlined quote-card__action quote-card__action--change"
+              title="change"
+              onClick={onChange}
+            >
+              refresh
+            </button>
+          )}
         </>
       )}
+      <button
+        className="material-symbols-outlined quote-card__action quote-card__action--delete"
+        title="delete"
+        onClick={onDelete}
+      >
+        delete
+      </button>
       <button
         className="material-symbols-outlined quote-card__action quote-card__action--copy"
         title="copy"

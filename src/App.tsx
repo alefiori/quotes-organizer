@@ -46,6 +46,20 @@ export const App: FC = () => {
     fetchSuggestedQuote()
   }
 
+  const deleteQuote = async (quote: Quote | SuggestedQuote): Promise<void> => {
+    if (quote === suggestedQuote) {
+      setSuggestedQuote(undefined)
+    } else {
+      try {
+        const { id } = quote as Quote
+        await quotesApi.deleteQuote({ id })
+        setQuotes(quotes.filter((quote) => quote.id !== id))
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
   return (
     <>
       <main>
@@ -58,6 +72,8 @@ export const App: FC = () => {
             search={search}
             suggestedQuote={suggestedQuote}
             addSuggested={addSuggestedQuote}
+            changeSuggested={fetchSuggestedQuote}
+            deleteQuote={deleteQuote}
           />
         )}
       </main>

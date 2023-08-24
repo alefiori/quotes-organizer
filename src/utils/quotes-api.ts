@@ -1,10 +1,12 @@
 // eslint-disable-next-line import/named
 import { GraphQLQuery } from '@aws-amplify/api'
 import { API, graphqlOperation } from 'aws-amplify'
-import { createQuote, searchQuotes } from '../graphql'
+import { createQuote, deleteQuote, searchQuotes } from '../graphql'
 import {
   CreateQuoteInput,
   CreateQuoteMutation,
+  DeleteQuoteInput,
+  DeleteQuoteMutation,
   Quote,
   SearchQuotesQuery,
   SearchableQuoteSortInput,
@@ -19,6 +21,12 @@ export const quotesApi = {
       return data.createQuote
     }
     throw new Error('Error creating quote')
+  },
+  deleteQuote: async (input: DeleteQuoteInput): Promise<void> => {
+    const { data } = await API.graphql<GraphQLQuery<DeleteQuoteMutation>>(graphqlOperation(deleteQuote, { input }))
+    if (!data?.deleteQuote) {
+      throw new Error('Error deleting quote')
+    }
   },
   getQuotes: async (): Promise<Array<Quote>> => {
     const sort: SearchableQuoteSortInput = {

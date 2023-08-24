@@ -7,10 +7,19 @@ type QuotesListProps = {
   quotes: Array<Quote>
   search: string
   addSuggested: (_: SuggestedQuote) => void
+  changeSuggested: () => void
+  deleteQuote: (_: Quote | SuggestedQuote) => void
   suggestedQuote?: SuggestedQuote
 }
 
-export const QuotesList: FC<QuotesListProps> = ({ quotes, search, suggestedQuote, addSuggested }) => {
+export const QuotesList: FC<QuotesListProps> = ({
+  quotes,
+  search,
+  suggestedQuote,
+  addSuggested,
+  changeSuggested,
+  deleteQuote,
+}) => {
   const [filteredQuotes, setFilteredQuotes] = useState<Array<Quote>>(quotes)
   const { searchFilter } = useSearchFilter()
 
@@ -34,13 +43,19 @@ export const QuotesList: FC<QuotesListProps> = ({ quotes, search, suggestedQuote
                 onAdd={() => {
                   addSuggested(suggestedQuote)
                 }}
+                onChange={changeSuggested}
                 onCopy={() => copyQuote(suggestedQuote.quote, suggestedQuote.author)}
+                onDelete={() => deleteQuote(suggestedQuote)}
               />
             </li>
           )}
           {filteredQuotes.map((quote, index) => (
             <li key={index}>
-              <QuoteCard {...quote} onCopy={() => copyQuote(quote.content, quote.author)} />
+              <QuoteCard
+                {...quote}
+                onCopy={() => copyQuote(quote.content, quote.author)}
+                onDelete={() => deleteQuote(quote)}
+              />
             </li>
           ))}
         </ul>

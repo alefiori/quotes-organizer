@@ -33,8 +33,14 @@
     &--copy {
       right: 0;
     }
-    &--add {
+    &--delete {
       right: 3.2rem;
+    }
+    &--add {
+      right: 6.4rem;
+    }
+    &--change {
+      right: 9.6rem;
     }
   }
   &__suggestion {
