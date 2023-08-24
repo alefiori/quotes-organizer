@@ -19,3 +19,21 @@
   color: inherit;
   cursor: auto;
 }
+
+@mixin for-desktop {
+  @media (max-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin for-tablet {
+  @media (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin for-mobile {
+  @media (max-width: 768px) {
+    @content;
+  }
+}

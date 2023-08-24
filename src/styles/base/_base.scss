@@ -25,6 +25,9 @@ main {
   max-width: $grid-width;
   margin: 0 auto 5rem;
   min-height: 100vh;
+  @include for-desktop {
+    padding: 0.8rem;
+  }
 }
 
 button {

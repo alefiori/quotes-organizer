@@ -1,6 +1,6 @@
 .search-bar {
-  width: 40rem;
-  margin: auto;
+  max-width: 48rem;
+  margin: 1.6rem auto;
   position: relative;
   &__input {
     transition: background-color 0.5s;
