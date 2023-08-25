@@ -1,4 +1,5 @@
 import { FC, useState } from 'react'
+import { TextButton } from '..'
 import { CreateQuoteInput } from '../../types'
 
 type AddModalProps = {
@@ -35,26 +36,21 @@ export const AddModal: FC<AddModalProps> = ({ onCancel, onConfirm }) => {
         />
       </form>
       <div className="add-modal__actions">
-        <button
-          id="add-modal-cancel"
+        <TextButton
           className="add-modal__actions__button"
           data-testid="add-modal-cancel"
+          label="Cancel"
+          icon="cancel"
           onClick={onCancel}
-        >
-          <span>Cancel</span>
-          <span className="material-symbols-outlined">cancel</span>
-        </button>
-        <button
-          id="add-modal-add"
+        />
+        <TextButton
           className="add-modal__actions__button"
           data-testid="add-modal-add"
+          label="Add"
+          icon="check_circle"
           disabled={!content.trim()}
           onClick={() => onConfirm({ content, author: author.trim() ? author : null })}
-          type="submit"
-        >
-          <span>Add</span>
-          <span className="material-symbols-outlined">check_circle</span>
-        </button>
+        />
       </div>
     </article>
   )

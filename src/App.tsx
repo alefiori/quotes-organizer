@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import { AddButton, AddModal, QuotesList, SearchBar } from './components'
+import { AddModal, QuotesList, SearchBar, TextButton } from './components'
 import { CreateQuoteInput, Quote, SuggestedQuote } from './types'
 import { quotesApi, suggestedQuoteApi } from './utils'
 
@@ -65,7 +65,7 @@ export const App: FC = () => {
       <main>
         <h1>Quotes Organizer</h1>
         <SearchBar onSearch={(search) => setSearch(search)} />
-        <AddButton onClick={() => setAddMode(true)} />
+        <TextButton onClick={() => setAddMode(true)} label="Add Quote" icon="add" />
         {quotes && (
           <QuotesList
             quotes={quotes}

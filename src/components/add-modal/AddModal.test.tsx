@@ -2,6 +2,14 @@ import { fireEvent, render } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { AddModal } from '..'
 
+vi.mock('../text-button/TextButton', () => ({
+  TextButton: ({ label, disabled, onClick }: { label: string; disabled?: boolean; onClick: () => void }) => (
+    <button disabled={disabled} id={label} onClick={onClick}>
+      __TEXT_BUTTON__
+    </button>
+  ),
+}))
+
 describe('AddModal component', () => {
   it('should render the close button', () => {
     const { container } = render(<AddModal onCancel={vi.fn()} onConfirm={vi.fn()} />)
@@ -21,11 +29,11 @@ describe('AddModal component', () => {
   })
   it('should render the cancel button', () => {
     const { container } = render(<AddModal onCancel={vi.fn()} onConfirm={vi.fn()} />)
-    expect(container.querySelector('#add-modal-cancel')).toHaveTextContent('Cancel')
+    expect(container.querySelector('#Cancel')).toHaveTextContent('__TEXT_BUTTON__')
   })
   it('should render the add button', () => {
     const { container } = render(<AddModal onCancel={vi.fn()} onConfirm={vi.fn()} />)
-    expect(container.querySelector('#add-modal-add')).toHaveTextContent('Add')
+    expect(container.querySelector('#Add')).toHaveTextContent('__TEXT_BUTTON__')
   })
   it('should call onCancel when the close button is clicked', () => {
     const onCancel = vi.fn()
@@ -37,14 +45,14 @@ describe('AddModal component', () => {
   it('should call onCancel when the cancel button is clicked', () => {
     const onCancel = vi.fn()
     const { container } = render(<AddModal onCancel={onCancel} onConfirm={vi.fn()} />)
-    const cancelButton = container.querySelector('#add-modal-cancel')!
+    const cancelButton = container.querySelector('#Cancel')!
     fireEvent.click(cancelButton)
     expect(onCancel).toHaveBeenCalledOnce()
   })
   it('should not call onConfirm when the add button is clicked if content textarea is empty', () => {
     const onConfirm = vi.fn()
     const { container } = render(<AddModal onCancel={vi.fn()} onConfirm={onConfirm} />)
-    const addButton = container.querySelector('#add-modal-add')!
+    const addButton = container.querySelector('#Add')!
     const contentTextarea = container.querySelector('#add-form-content')!
     expect(contentTextarea).toHaveTextContent('')
     fireEvent.click(addButton)
@@ -55,7 +63,7 @@ describe('AddModal component', () => {
     const { container } = render(<AddModal onCancel={vi.fn()} onConfirm={onConfirm} />)
     const contentTextarea = container.querySelector('#add-form-content')!
     fireEvent.change(contentTextarea, { target: { value: '__CONTENT__' } })
-    const addButton = container.querySelector('#add-modal-add')!
+    const addButton = container.querySelector('#Add')!
     fireEvent.click(addButton)
     expect(onConfirm).toHaveBeenCalledWith({ content: '__CONTENT__', author: null })
   })
@@ -66,7 +74,7 @@ describe('AddModal component', () => {
     fireEvent.change(contentTextarea, { target: { value: '__CONTENT__' } })
     const authorInput = container.querySelector('#add-form-author')!
     fireEvent.change(authorInput, { target: { value: '__AUTHOR__' } })
-    const addButton = container.querySelector('#add-modal-add')!
+    const addButton = container.querySelector('#Add')!
     fireEvent.click(addButton)
     expect(onConfirm).toHaveBeenCalledWith({ content: '__CONTENT__', author: '__AUTHOR__' })
   })
