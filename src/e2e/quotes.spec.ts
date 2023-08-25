@@ -1,6 +1,8 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
+import { loadEnv } from 'vite'
 
-const localUrl = 'http://localhost:5173/'
+const env = loadEnv('', process.cwd()) as ImportMetaEnv
+const localUrl = env.VITE_APP_URL
 
 test('has title', async ({ page }) => {
   await page.goto(localUrl)
