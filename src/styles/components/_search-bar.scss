@@ -3,6 +3,8 @@
   margin: 1.6rem auto;
   position: relative;
   &__input {
+    appearance: none;
+    background-color: $color-white;
     transition: background-color 0.5s;
     border: 1px solid $color-primary-dark;
     border-radius: 1rem;

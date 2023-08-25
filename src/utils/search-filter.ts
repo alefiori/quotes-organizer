@@ -1,7 +1,8 @@
-import { Quote } from '../types'
-
 export const useSearchFilter = () => {
-  const searchFilter = (quotes: Array<Quote>, search: string) => {
+  const searchFilter = <T extends { author?: string | null; content: string }>(
+    quotes: Array<T>,
+    search: string,
+  ): Array<T> => {
     if (!search) {
       return quotes
     }

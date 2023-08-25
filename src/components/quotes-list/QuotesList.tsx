@@ -21,9 +21,18 @@ export const QuotesList: FC<QuotesListProps> = ({
   deleteQuote,
 }) => {
   const [filteredQuotes, setFilteredQuotes] = useState<Array<Quote>>(quotes)
+  const [showSuggested, setShowSuggested] = useState<boolean>(true)
   const { searchFilter } = useSearchFilter()
 
   useEffect(() => setFilteredQuotes(searchFilter(quotes, search)), [quotes, search, searchFilter])
+  useEffect(() => {
+    if (suggestedQuote) {
+      const { quote: content, author } = suggestedQuote
+      setShowSuggested(!!searchFilter([{ content, author }], search).length)
+    } else {
+      setShowSuggested(false)
+    }
+  }, [search, suggestedQuote, searchFilter])
 
   const copyQuote = (content: string, author?: string | null): void => {
     const authorText = author ? `\n(${author})` : ''
@@ -33,9 +42,9 @@ export const QuotesList: FC<QuotesListProps> = ({
   return (
     <section className="quotes-list">
       <h2 className="quotes-list__title">List of Quotes</h2>
-      {filteredQuotes.length || suggestedQuote ? (
+      {filteredQuotes.length || showSuggested ? (
         <ul className="quotes-list__list">
-          {suggestedQuote && (
+          {showSuggested && suggestedQuote && (
             <li>
               <QuoteCard
                 content={suggestedQuote.quote}

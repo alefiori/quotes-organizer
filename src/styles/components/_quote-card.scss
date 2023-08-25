@@ -9,6 +9,9 @@
   gap: 1.6rem;
   justify-content: space-between;
   position: relative;
+  &--suggestion {
+    background-color: $color-primary-lightest;
+  }
   &__content {
     overflow: hidden;
     text-align: justify;
@@ -36,26 +39,25 @@
     &--delete {
       right: 3.2rem;
     }
-    &--add {
+    &--change {
       right: 6.4rem;
     }
-    &--change {
-      right: 9.6rem;
-    }
   }
-  &__suggestion {
-    padding: 0.8rem;
+  &__add {
+    padding: 0.4rem;
     position: absolute;
     top: -1.7rem;
     right: 0;
-    background-color: $color-primary;
-    border-radius: 1rem;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    color: $color-white;
+    background-color: $color-white;
+    border-radius: 2rem;
+    border: 1px solid $color-primary-dark;
+    font-weight: 700;
+    &:hover {
+      background-color: $color-primary-light;
+    }
   }
 }
 
-.add-mode .quote-card__suggestion {
-  opacity: 0.8;
+.add-mode .quote-card--add {
+  opacity: 0.5;
 }

@@ -11,7 +11,7 @@ type QuoteCardProps = {
 
 export const QuoteCard: FC<QuoteCardProps> = ({ author, content, onAdd, onChange, onCopy, onDelete }) => {
   return (
-    <article className="quote-card">
+    <article className={`quote-card ${onAdd ? 'quote-card--suggestion' : ''}`}>
       <p className="quote-card__content" title={content}>
         {content}
       </p>
@@ -22,12 +22,7 @@ export const QuoteCard: FC<QuoteCardProps> = ({ author, content, onAdd, onChange
       )}
       {onAdd && (
         <>
-          <span className="quote-card__suggestion">new</span>
-          <button
-            className="material-symbols-outlined quote-card__action quote-card__action--add"
-            title="add"
-            onClick={onAdd}
-          >
+          <button className="material-symbols-outlined quote-card__add" onClick={onAdd} title="add">
             add
           </button>
           {onChange && (
