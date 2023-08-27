@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import { AddModal, QuotesList, SearchBar, TextButton } from './components'
+import { AddModal, QuotesList, SearchBar, Spinner, TextButton } from './components'
 import { CreateQuoteInput, Quote, SuggestedQuote } from './types'
 import { quotesApi, suggestedQuoteApi } from './utils'
 
@@ -8,13 +8,22 @@ export const App: FC = () => {
   const [suggestedQuote, setSuggestedQuote] = useState<SuggestedQuote>()
   const [search, setSearch] = useState<string>('')
   const [addMode, setAddMode] = useState<boolean>(false)
+  const [showSpinner, setShowSpinner] = useState<boolean>(true)
 
   useEffect(() => {
-    fetchQuotes()
-    fetchSuggestedQuote()
+    initQuotes()
   }, [])
 
-  useEffect(() => document.body.classList[addMode ? 'add' : 'remove']('add-mode'), [addMode])
+  useEffect(
+    () => document.body.classList[addMode || showSpinner ? 'add' : 'remove']('add-mode'),
+    [addMode, showSpinner],
+  )
+
+  const initQuotes = async (): Promise<void> => {
+    setShowSpinner(true)
+    await Promise.all([fetchQuotes(), fetchSuggestedQuote()])
+    setShowSpinner(false)
+  }
 
   const fetchQuotes = async (): Promise<void> => {
     try {
@@ -41,15 +50,17 @@ export const App: FC = () => {
       console.log(error)
     }
   }
-  const addSuggestedQuote = ({ author, quote: content }: SuggestedQuote): void => {
-    addQuote({ author, content })
-    fetchSuggestedQuote()
+  const addSuggestedQuote = async ({ author, quote: content }: SuggestedQuote): Promise<void> => {
+    setShowSpinner(true)
+    await Promise.all([addQuote({ author, content }), fetchSuggestedQuote()])
+    setShowSpinner(false)
   }
 
   const deleteQuote = async (quote: Quote | SuggestedQuote): Promise<void> => {
     if (quote === suggestedQuote) {
       setSuggestedQuote(undefined)
     } else {
+      setShowSpinner(true)
       try {
         const { id } = quote as Quote
         await quotesApi.deleteQuote({ id })
@@ -57,7 +68,14 @@ export const App: FC = () => {
       } catch (error) {
         console.log(error)
       }
+      setShowSpinner(false)
     }
+  }
+
+  const changeSuggestedQuote = async (): Promise<void> => {
+    setShowSpinner(true)
+    await fetchSuggestedQuote()
+    setShowSpinner(false)
   }
 
   return (
@@ -71,11 +89,12 @@ export const App: FC = () => {
           search={search}
           suggestedQuote={suggestedQuote}
           addSuggested={addSuggestedQuote}
-          changeSuggested={fetchSuggestedQuote}
+          changeSuggested={changeSuggestedQuote}
           deleteQuote={deleteQuote}
         />
       </main>
       {addMode && <AddModal onCancel={() => setAddMode(false)} onConfirm={addQuote} />}
+      {showSpinner && <Spinner />}
     </>
   )
 }
