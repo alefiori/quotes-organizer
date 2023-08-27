@@ -66,16 +66,14 @@ export const App: FC = () => {
         <h1>Quotes Organizer</h1>
         <SearchBar onSearch={(search) => setSearch(search)} />
         <TextButton onClick={() => setAddMode(true)} label="Add Quote" icon="add" />
-        {quotes && (
-          <QuotesList
-            quotes={quotes}
-            search={search}
-            suggestedQuote={suggestedQuote}
-            addSuggested={addSuggestedQuote}
-            changeSuggested={fetchSuggestedQuote}
-            deleteQuote={deleteQuote}
-          />
-        )}
+        <QuotesList
+          quotes={quotes}
+          search={search}
+          suggestedQuote={suggestedQuote}
+          addSuggested={addSuggestedQuote}
+          changeSuggested={fetchSuggestedQuote}
+          deleteQuote={deleteQuote}
+        />
       </main>
       {addMode && <AddModal onCancel={() => setAddMode(false)} onConfirm={addQuote} />}
     </>
