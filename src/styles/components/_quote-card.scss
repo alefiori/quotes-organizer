@@ -35,6 +35,9 @@
     bottom: 0;
     cursor: pointer;
     padding: 0.8rem;
+    &:hover {
+      color: $color-primary;
+    }
     &--copy {
       right: 0;
     }

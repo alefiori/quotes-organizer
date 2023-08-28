@@ -1,10 +1,10 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
+import { defineConfig, splitVendorChunkPlugin } from 'vite'
 import { configDefaults } from 'vitest/dist/config.js'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), splitVendorChunkPlugin()],
   test: {
     globals: true,
     environment: 'jsdom',
