@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import { AddModal, QuotesList, SearchBar, Spinner, TextButton } from './components'
+import { AddModal, QuotesList, SearchBar, Spinner, TextButton, Toast, ToastContent } from './components'
 import { CreateQuoteInput, Quote, SuggestedQuote } from './types'
 import { quotesApi, suggestedQuoteApi } from './utils'
 
@@ -9,6 +9,7 @@ export const App: FC = () => {
   const [search, setSearch] = useState<string>('')
   const [addMode, setAddMode] = useState<boolean>(false)
   const [showSpinner, setShowSpinner] = useState<boolean>(true)
+  const [toast, setToast] = useState<ToastContent>()
 
   useEffect(() => {
     initQuotes()
@@ -18,6 +19,13 @@ export const App: FC = () => {
     () => document.body.classList[addMode || showSpinner ? 'add' : 'remove']('add-mode'),
     [addMode, showSpinner],
   )
+
+  useEffect(() => {
+    if (toast) {
+      const timeout = setTimeout(() => setToast(undefined), 5000)
+      return () => clearTimeout(timeout)
+    }
+  }, [toast])
 
   const initQuotes = async (): Promise<void> => {
     setShowSpinner(true)
@@ -29,7 +37,7 @@ export const App: FC = () => {
     try {
       setQuotes(await quotesApi.getQuotes())
     } catch (error) {
-      console.log(error)
+      setToast({ message: `${error}`, type: 'error' })
     }
   }
 
@@ -37,7 +45,7 @@ export const App: FC = () => {
     try {
       setSuggestedQuote(await suggestedQuoteApi.getQuote())
     } catch (error) {
-      console.log(error)
+      setToast({ message: `${error}`, type: 'error' })
     }
   }
 
@@ -47,7 +55,7 @@ export const App: FC = () => {
       setQuotes([newQuote, ...quotes])
       setAddMode(false)
     } catch (error) {
-      console.log(error)
+      setToast({ message: `${error}`, type: 'error' })
     }
   }
   const addSuggestedQuote = async ({ author, quote: content }: SuggestedQuote): Promise<void> => {
@@ -66,7 +74,7 @@ export const App: FC = () => {
         await quotesApi.deleteQuote({ id })
         setQuotes(quotes.filter((quote) => quote.id !== id))
       } catch (error) {
-        console.log(error)
+        setToast({ message: `${error}`, type: 'error' })
       }
       setShowSpinner(false)
     }
@@ -95,6 +103,7 @@ export const App: FC = () => {
       </main>
       {addMode && <AddModal onCancel={() => setAddMode(false)} onConfirm={addQuote} />}
       {showSpinner && <Spinner />}
+      {toast && <Toast {...toast} onDismiss={() => setToast(undefined)} />}
     </>
   )
 }

@@ -11,6 +11,10 @@ $color-gray-dark: #5b5b5b;
 $color-white: #ffffff;
 $color-black: #000000;
 
+$color-success: #07bc0c;
+$color-error: #e74c3c;
+$color-warning: #f1c40f;
+
 //FONT
 $default-font-size: 1.6rem;
 $default-font-family: 'Inter';
@@ -32,4 +36,7 @@ $gutter-horizontal: 6rem;
   --color-gray-dark: #5b5b5b;
   --color-white: #ffffff;
   --color-black: #000000;
+  --color-success: #07bc0c;
+  --color-error: #e74c3c;
+  --color-warning: #f1c40f;
 }
