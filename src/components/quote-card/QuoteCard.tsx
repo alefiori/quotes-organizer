@@ -37,6 +37,7 @@ export const QuoteCard: FC<QuoteCardProps> = ({ author, content, onAdd, onChange
         </>
       )}
       <button
+        data-testid={`delete-${content}`}
         className="material-symbols-outlined quote-card__action quote-card__action--delete"
         title="delete"
         onClick={onDelete}

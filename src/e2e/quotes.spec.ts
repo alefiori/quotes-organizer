@@ -103,3 +103,22 @@ test('add button should be enabled if content is not empty', async ({ page }) =>
   await page.getByLabel('Content').fill('__TEST_CONTENT__')
   await expect(page.getByTestId('add-modal-add')).toBeEnabled()
 })
+
+test('on click on add button, modal is closed and new quote is add', async ({ page }) => {
+  await page.goto(localUrl)
+  await page.click('button')
+  await page.getByLabel('Content').fill('__TEST_CONTENT__')
+  await page.getByLabel('Author').fill('__TEST_AUTHOR__')
+  await page.click('[data-testid="add-modal-add"]')
+  await expect(page.getByTestId('add-modal')).not.toBeVisible()
+  await expect(page.getByText('__TEST_CONTENT__')).toBeVisible()
+  await expect(page.getByText('__TEST_AUTHOR__')).toBeVisible()
+})
+
+test('on click on trash button, quote is deleted', async ({ page }) => {
+  await page.goto(localUrl)
+  const deleteButton = await page.getByTestId('delete-__TEST_CONTENT__')
+  await deleteButton.click()
+  await expect(page.getByText('__TEST_CONTENT__')).not.toBeVisible()
+  await expect(page.getByText('__TEST_AUTHOR__')).not.toBeVisible()
+})
