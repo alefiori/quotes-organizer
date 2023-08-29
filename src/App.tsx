@@ -58,6 +58,7 @@ export const App: FC = () => {
       setToast({ message: `${error}`, type: 'error' })
     }
   }
+
   const addSuggestedQuote = async ({ author, quote: content }: SuggestedQuote): Promise<void> => {
     setShowSpinner(true)
     await Promise.all([addQuote({ author, content }), fetchSuggestedQuote()])
