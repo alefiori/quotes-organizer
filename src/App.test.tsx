@@ -59,8 +59,21 @@ vi.mock('./components/search-bar/SearchBar', () => ({
   ),
 }))
 
+vi.mock('./components/spinner/Spinner', () => ({
+  Spinner: () => <div>__SPINNER__</div>,
+}))
+
 vi.mock('./components/text-button/TextButton', () => ({
   TextButton: ({ onClick }: { onClick: () => void }) => <button onClick={onClick}>__TEXT_BUTTON__</button>,
+}))
+
+vi.mock('./components/toast/Toast', () => ({
+  Toast: ({ onDismiss }: { onDismiss: () => void }) => (
+    <>
+      <div>__TOAST__</div>
+      <button onClick={onDismiss}>__ON_DISMISS__</button>
+    </>
+  ),
 }))
 
 describe('App component', () => {
@@ -126,5 +139,42 @@ describe('App component', () => {
     const addButton = await findByText('__TEXT_BUTTON__')
     fireEvent.click(addButton)
     expect(document.body.classList.contains('add-mode')).toBe(true)
+  })
+  it('should show toast when quotesApi.getQuotes fails', async () => {
+    quotesApi.getQuotes.mockImplementationOnce(() => {
+      throw new Error('error')
+    })
+    const { findByText } = render(<App />)
+    expect(await findByText('__TOAST__')).toBeInTheDocument()
+  })
+  it('should show toast when quotesApi.addQuote fails', async () => {
+    quotesApi.addQuote.mockImplementationOnce(() => {
+      throw new Error('error')
+    })
+    const { findByText } = render(<App />)
+    const addButton = await findByText('__TEXT_BUTTON__')
+    fireEvent.click(addButton)
+    await findByText('__ADD_MODAL__')
+    const onConfirmButton = await findByText('__ON_CONFIRM__')
+    fireEvent.click(onConfirmButton)
+    expect(await findByText('__TOAST__')).toBeInTheDocument()
+  })
+  it('should show toast when quotesApi.deleteQuote fails', async () => {
+    quotesApi.deleteQuote.mockImplementationOnce(() => {
+      throw new Error('error')
+    })
+    const { findByText } = render(<App />)
+    const deleteButton = await findByText('__DELETE_QUOTE__')
+    fireEvent.click(deleteButton)
+    expect(await findByText('__TOAST__')).toBeInTheDocument()
+  })
+  it('should show toast when suggestedQuoteApi.getQuote fails', async () => {
+    suggestedQuoteApi.getQuote.mockImplementationOnce(() => {
+      throw new Error('error')
+    })
+    const { findByText } = render(<App />)
+    const changeButton = await findByText('__CHANGE_SUGGESTED__')
+    fireEvent.click(changeButton)
+    expect(await findByText('__TOAST__')).toBeInTheDocument()
   })
 })

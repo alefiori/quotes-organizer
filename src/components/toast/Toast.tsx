@@ -1,7 +1,6 @@
 import { FC } from 'react'
+import { ToastContent, ToastType } from '../../types'
 
-type ToastType = 'success' | 'error' | 'warning'
-export type ToastContent = { message: string; type: ToastType }
 type ToastProps = ToastContent & {
   onDismiss: () => void
 }

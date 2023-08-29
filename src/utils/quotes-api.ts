@@ -16,16 +16,24 @@ import {
 
 export const quotesApi = {
   addQuote: async (input: CreateQuoteInput): Promise<Quote> => {
-    const { data } = await API.graphql<GraphQLQuery<CreateQuoteMutation>>(graphqlOperation(createQuote, { input }))
-    if (data?.createQuote) {
-      return data.createQuote
+    try {
+      const { data } = await API.graphql<GraphQLQuery<CreateQuoteMutation>>(graphqlOperation(createQuote, { input }))
+      if (data?.createQuote) {
+        return data.createQuote
+      }
+      throw new Error()
+    } catch (_) {
+      throw new Error('Creating quote')
     }
-    throw new Error('Error creating quote')
   },
   deleteQuote: async (input: DeleteQuoteInput): Promise<void> => {
-    const { data } = await API.graphql<GraphQLQuery<DeleteQuoteMutation>>(graphqlOperation(deleteQuote, { input }))
-    if (!data?.deleteQuote) {
-      throw new Error('Error deleting quote')
+    try {
+      const { data } = await API.graphql<GraphQLQuery<DeleteQuoteMutation>>(graphqlOperation(deleteQuote, { input }))
+      if (!data?.deleteQuote) {
+        throw new Error()
+      }
+    } catch (_) {
+      throw new Error('Deleting quote')
     }
   },
   getQuotes: async (): Promise<Array<Quote>> => {
@@ -33,10 +41,14 @@ export const quotesApi = {
       direction: SearchableSortDirection.desc,
       field: SearchableQuoteSortableFields.createdAt,
     }
-    const { data } = await API.graphql<GraphQLQuery<SearchQuotesQuery>>(graphqlOperation(searchQuotes, { sort }))
-    if (data?.searchQuotes?.items) {
-      return data.searchQuotes.items
+    try {
+      const { data } = await API.graphql<GraphQLQuery<SearchQuotesQuery>>(graphqlOperation(searchQuotes, { sort }))
+      if (data?.searchQuotes?.items) {
+        return data.searchQuotes.items
+      }
+      throw new Error()
+    } catch (_) {
+      throw new Error('Fetching quotes')
     }
-    throw new Error('Error fetching quotes')
   },
 }

@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
-import { AddModal, QuotesList, SearchBar, Spinner, TextButton, Toast, ToastContent } from './components'
-import { CreateQuoteInput, Quote, SuggestedQuote } from './types'
+import { AddModal, QuotesList, SearchBar, Spinner, TextButton, Toast } from './components'
+import { CreateQuoteInput, Quote, SuggestedQuote, ToastContent } from './types'
 import { quotesApi, suggestedQuoteApi } from './utils'
 
 export const App: FC = () => {
