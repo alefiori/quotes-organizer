@@ -2,6 +2,7 @@
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { App } from './App'
+import { Quote, SuggestedQuote } from './types'
 
 const quotesApi = vi.hoisted(() => ({
   getQuotes: vi.fn().mockImplementation(() => []),
@@ -12,6 +13,12 @@ const quotesApi = vi.hoisted(() => ({
 vi.mock('./utils/quotes-api', () => ({
   quotesApi,
 }))
+
+const suggestedQuote: SuggestedQuote = {
+  author: '__SUGGESTED_AUTHOR__',
+  quote: '__SUGGESTED_QUOTE__',
+  category: '__SUGGESTED_CATEGORY__',
+}
 
 const suggestedQuoteApi = vi.hoisted(() => ({
   getQuote: vi.fn(),
@@ -39,13 +46,18 @@ vi.mock('./components/quotes-list/QuotesList', () => ({
   }: {
     addSuggested: () => void
     changeSuggested: () => void
-    deleteQuote: () => void
+    deleteQuote: (_: Quote | SuggestedQuote) => void
   }) => (
     <>
       <div>__QUOTES_LIST__</div>
       <button onClick={addSuggested}>__ADD_SUGGESTED__</button>
       <button onClick={changeSuggested}>__CHANGE_SUGGESTED__</button>
-      <button onClick={deleteQuote}>__DELETE_QUOTE__</button>
+      <button
+        onClick={() => deleteQuote({ __typename: 'Quote', content: '', id: '__ID__', createdAt: '', updatedAt: '' })}
+      >
+        __DELETE_QUOTE__
+      </button>
+      <button onClick={() => deleteQuote(suggestedQuote)}>__DELETE_SUGGESTED_QUOTE__</button>
     </>
   ),
 }))
@@ -114,24 +126,31 @@ describe('App component', () => {
     fireEvent.click(addButton)
     expect(quotesApi.addQuote).toHaveBeenCalled()
   })
-  it('should call quotesApi.deleteQuote on QuotesList deleteQuote', async () => {
-    const { findByText } = render(<App />)
-    const deleteButton = await findByText('__DELETE_QUOTE__')
-    fireEvent.click(deleteButton)
-    expect(quotesApi.deleteQuote).toHaveBeenCalled()
-  })
-  it('should call suggestedQuoteApi.getQuote on QuotesList changeSuggested', async () => {
-    const { findByText } = render(<App />)
-    const changeButton = await findByText('__CHANGE_SUGGESTED__')
-    fireEvent.click(changeButton)
-    expect(suggestedQuoteApi.getQuote).toHaveBeenCalled()
-  })
   it('should call quotesApi.getQuotes on startup', () => {
     render(<App />)
     waitFor(() => expect(quotesApi.getQuotes).toHaveBeenCalled())
   })
   it('should call suggestedQuoteApi.getQuote on startup', async () => {
     render(<App />)
+    expect(suggestedQuoteApi.getQuote).toHaveBeenCalled()
+  })
+  it('should not call quotesApi.deleteQuote on QuotesList deleteQuote if suggestedQuote', async () => {
+    suggestedQuoteApi.getQuote.mockImplementationOnce(() => suggestedQuote)
+    const { findByText } = render(<App />)
+    const deleteSuggested = await findByText('__DELETE_SUGGESTED_QUOTE__')
+    await fireEvent.click(deleteSuggested)
+    await expect(quotesApi.deleteQuote).not.toHaveBeenCalled()
+  })
+  it('should call quotesApi.deleteQuote on QuotesList deleteQuote', async () => {
+    const { findByText } = render(<App />)
+    const deleteButton = await findByText('__DELETE_QUOTE__')
+    fireEvent.click(deleteButton)
+    expect(quotesApi.deleteQuote).toHaveBeenCalledWith({ id: '__ID__' })
+  })
+  it('should call suggestedQuoteApi.getQuote on QuotesList changeSuggested', async () => {
+    const { findByText } = render(<App />)
+    const changeButton = await findByText('__CHANGE_SUGGESTED__')
+    fireEvent.click(changeButton)
     expect(suggestedQuoteApi.getQuote).toHaveBeenCalled()
   })
   it('should add add-mode class when add button is clicked', async () => {
