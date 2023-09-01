@@ -8,8 +8,8 @@ type AddModalProps = {
 }
 
 export const AddModal: FC<AddModalProps> = ({ onCancel, onConfirm }) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
+  const [content, setContent] = useState<string>('')
+  const [author, setAuthor] = useState<string>('')
 
   return (
     <article className="add-modal" data-testid="add-modal">

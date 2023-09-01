@@ -6,7 +6,7 @@ type SearchBarProps = {
 }
 
 export const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState<string>('')
   const { debounce } = useDebounce()
 
   const onSearchChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
