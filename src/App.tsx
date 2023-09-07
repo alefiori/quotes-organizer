@@ -1,7 +1,8 @@
 import { FC, useEffect, useState } from 'react'
-import { AddModal, QuotesList, SearchBar, Spinner, TextButton, Toast } from './components'
+import { AddModal, Header, QuotesList, SearchBar, Spinner, Button, Toast } from './components'
 import { CreateQuoteInput, Quote, SuggestedQuote, ToastContent } from './types'
 import { quotesApi, suggestedQuoteApi } from './utils'
+import { Auth } from 'aws-amplify'
 
 export const App: FC = () => {
   const [quotes, setQuotes] = useState<Array<Quote>>([])
@@ -87,12 +88,20 @@ export const App: FC = () => {
     setShowSpinner(false)
   }
 
+  const logout = async (): Promise<void> => {
+    try {
+      await Auth.signOut({ global: true })
+    } catch (_) {
+      setToast({ message: 'Error during Sign Out', type: 'error' })
+    }
+  }
+
   return (
     <>
       <main>
-        <h1>Quotes Organizer</h1>
+        <Header onLogout={logout} />
         <SearchBar onSearch={(search) => setSearch(search)} />
-        <TextButton onClick={() => setAddMode(true)} label="Add Quote" icon="add" />
+        <Button onClick={() => setAddMode(true)} label="Add Quote" icon="add" />
         <QuotesList
           quotes={quotes}
           search={search}

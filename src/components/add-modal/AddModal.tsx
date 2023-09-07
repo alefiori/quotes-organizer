@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { TextButton } from '..'
+import { Button } from '..'
 import { CreateQuoteInput } from '../../types'
 
 type AddModalProps = {
@@ -36,14 +36,14 @@ export const AddModal: FC<AddModalProps> = ({ onCancel, onConfirm }) => {
         />
       </form>
       <div className="add-modal__actions">
-        <TextButton
+        <Button
           className="add-modal__actions__button"
           data-testid="add-modal-cancel"
           label="Cancel"
           icon="cancel"
           onClick={onCancel}
         />
-        <TextButton
+        <Button
           className="add-modal__actions__button"
           data-testid="add-modal-add"
           label="Add"

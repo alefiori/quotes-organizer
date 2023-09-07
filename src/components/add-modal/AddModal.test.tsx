@@ -2,8 +2,8 @@ import { fireEvent, render } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { AddModal } from '..'
 
-vi.mock('../text-button/TextButton', () => ({
-  TextButton: ({ label, disabled, onClick }: { label: string; disabled?: boolean; onClick: () => void }) => (
+vi.mock('../button/Button', () => ({
+  Button: ({ label, disabled, onClick }: { label: string; disabled?: boolean; onClick: () => void }) => (
     <button disabled={disabled} id={label} onClick={onClick}>
       __TEXT_BUTTON__
     </button>

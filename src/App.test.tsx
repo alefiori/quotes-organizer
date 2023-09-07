@@ -4,6 +4,14 @@ import { describe, expect, it, vi } from 'vitest'
 import { App } from './App'
 import { Quote, SuggestedQuote } from './types'
 
+const Auth = vi.hoisted(() => ({
+  signOut: vi.fn(),
+}))
+
+vi.mock('aws-amplify', () => ({
+  Auth,
+}))
+
 const quotesApi = vi.hoisted(() => ({
   getQuotes: vi.fn().mockImplementation(() => []),
   addQuote: vi.fn(),
@@ -75,8 +83,8 @@ vi.mock('./components/spinner/Spinner', () => ({
   Spinner: () => <div>__SPINNER__</div>,
 }))
 
-vi.mock('./components/text-button/TextButton', () => ({
-  TextButton: ({ onClick }: { onClick: () => void }) => <button onClick={onClick}>__TEXT_BUTTON__</button>,
+vi.mock('./components/button/Button', () => ({
+  Button: ({ onClick }: { onClick: () => void }) => <button onClick={onClick}>__TEXT_BUTTON__</button>,
 }))
 
 vi.mock('./components/toast/Toast', () => ({
@@ -88,10 +96,19 @@ vi.mock('./components/toast/Toast', () => ({
   ),
 }))
 
+vi.mock('./components/header/Header', () => ({
+  Header: ({ onLogout }: { onLogout: () => void }) => (
+    <>
+      <div>__HEADER__</div>
+      <button onClick={onLogout}>__LOGOUT__</button>
+    </>
+  ),
+}))
+
 describe('App component', () => {
-  it('should render title', async () => {
-    const { findByRole } = render(<App />)
-    expect(await findByRole('heading')).toHaveTextContent('Quotes Organizer')
+  it('should render header', async () => {
+    const { findByText } = render(<App />)
+    expect(await findByText('__HEADER__')).toBeInTheDocument()
   })
   it('should render a search bar', async () => {
     const { findByText } = render(<App />)
@@ -194,6 +211,21 @@ describe('App component', () => {
     const { findByText } = render(<App />)
     const changeButton = await findByText('__CHANGE_SUGGESTED__')
     fireEvent.click(changeButton)
+    expect(await findByText('__TOAST__')).toBeInTheDocument()
+  })
+  it('should call Auth.signOut on logout', async () => {
+    const { findByText } = render(<App />)
+    const logoutButton = await findByText('__LOGOUT__')
+    fireEvent.click(logoutButton)
+    expect(Auth.signOut).toHaveBeenCalledOnce()
+  })
+  it('should show toast when Auth.signOut fails', async () => {
+    Auth.signOut.mockImplementationOnce(() => {
+      throw new Error('error')
+    })
+    const { findByText } = render(<App />)
+    const logoutButton = await findByText('__LOGOUT__')
+    fireEvent.click(logoutButton)
     expect(await findByText('__TOAST__')).toBeInTheDocument()
   })
 })
