@@ -1,8 +1,8 @@
-import { FC, useEffect, useState } from 'react'
-import { AddModal, Header, QuotesList, SearchBar, Spinner, Button, Toast } from './components'
+import { Auth } from 'aws-amplify'
+import { FC, useCallback, useEffect, useState } from 'react'
+import { AddModal, Button, Header, QuotesList, SearchBar, Spinner, Toast } from './components'
 import { CreateQuoteInput, Quote, SuggestedQuote, ToastContent } from './types'
 import { quotesApi, suggestedQuoteApi } from './utils'
-import { Auth } from 'aws-amplify'
 
 export const App: FC = () => {
   const [quotes, setQuotes] = useState<Array<Quote>>([])
@@ -28,73 +28,82 @@ export const App: FC = () => {
     }
   }, [toast])
 
-  const initQuotes = async (): Promise<void> => {
+  const initQuotes = useCallback(async (): Promise<void> => {
     setShowSpinner(true)
     await Promise.all([fetchQuotes(), fetchSuggestedQuote()])
     setShowSpinner(false)
-  }
+  }, [])
 
-  const fetchQuotes = async (): Promise<void> => {
+  const fetchQuotes = useCallback(async (): Promise<void> => {
     try {
       setQuotes(await quotesApi.getQuotes())
     } catch (error) {
       setToast({ message: `${error}`, type: 'error' })
     }
-  }
+  }, [])
 
-  const fetchSuggestedQuote = async (): Promise<void> => {
+  const fetchSuggestedQuote = useCallback(async (): Promise<void> => {
     try {
       setSuggestedQuote(await suggestedQuoteApi.getQuote())
     } catch (error) {
       setToast({ message: `${error}`, type: 'error' })
     }
-  }
+  }, [])
 
-  const addQuote = async (quote: CreateQuoteInput): Promise<void> => {
-    try {
-      const newQuote = await quotesApi.addQuote(quote)
-      setQuotes([newQuote, ...quotes])
-      setAddMode(false)
-    } catch (error) {
-      setToast({ message: `${error}`, type: 'error' })
-    }
-  }
-
-  const addSuggestedQuote = async ({ author, quote: content }: SuggestedQuote): Promise<void> => {
-    setShowSpinner(true)
-    await Promise.all([addQuote({ author, content }), fetchSuggestedQuote()])
-    setShowSpinner(false)
-  }
-
-  const deleteQuote = async (quote: Quote | SuggestedQuote): Promise<void> => {
-    if (quote === suggestedQuote) {
-      setSuggestedQuote(undefined)
-    } else {
-      setShowSpinner(true)
+  const addQuote = useCallback(
+    async (quote: CreateQuoteInput): Promise<void> => {
       try {
-        const { id } = quote as Quote
-        await quotesApi.deleteQuote({ id })
-        setQuotes(quotes.filter((quote) => quote.id !== id))
+        const newQuote = await quotesApi.addQuote(quote)
+        setQuotes([newQuote, ...quotes])
+        setAddMode(false)
       } catch (error) {
         setToast({ message: `${error}`, type: 'error' })
       }
-      setShowSpinner(false)
-    }
-  }
+    },
+    [quotes],
+  )
 
-  const changeSuggestedQuote = async (): Promise<void> => {
+  const addSuggestedQuote = useCallback(
+    async ({ author, quote: content }: SuggestedQuote): Promise<void> => {
+      setShowSpinner(true)
+      await Promise.all([addQuote({ author, content }), fetchSuggestedQuote()])
+      setShowSpinner(false)
+    },
+    [addQuote, fetchSuggestedQuote],
+  )
+
+  const deleteQuote = useCallback(
+    async (quote: Quote | SuggestedQuote): Promise<void> => {
+      if (quote === suggestedQuote) {
+        setSuggestedQuote(undefined)
+      } else {
+        setShowSpinner(true)
+        try {
+          const { id } = quote as Quote
+          await quotesApi.deleteQuote({ id })
+          setQuotes(quotes.filter((quote) => quote.id !== id))
+        } catch (error) {
+          setToast({ message: `${error}`, type: 'error' })
+        }
+        setShowSpinner(false)
+      }
+    },
+    [quotes, suggestedQuote],
+  )
+
+  const changeSuggestedQuote = useCallback(async (): Promise<void> => {
     setShowSpinner(true)
     await fetchSuggestedQuote()
     setShowSpinner(false)
-  }
+  }, [fetchSuggestedQuote])
 
-  const logout = async (): Promise<void> => {
+  const logout = useCallback(async (): Promise<void> => {
     try {
       await Auth.signOut({ global: true })
     } catch (_) {
       setToast({ message: 'Error during Sign Out', type: 'error' })
     }
-  }
+  }, [])
 
   return (
     <>

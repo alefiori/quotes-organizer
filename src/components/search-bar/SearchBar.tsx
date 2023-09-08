@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from 'react'
+import { ChangeEvent, FC, useCallback, useState } from 'react'
 import { useDebounce } from '../../utils'
 
 type SearchBarProps = {
@@ -9,10 +9,10 @@ export const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
   const [search, setSearch] = useState<string>('')
   const { debounce } = useDebounce()
 
-  const onSearchChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+  const onSearchChange = useCallback(({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
     setSearch(value)
     debounce(onSearch, 500)(value)
-  }
+  }, [])
 
   return (
     <div className="search-bar">
