@@ -1,7 +1,7 @@
 import { FC, useCallback, useMemo } from 'react'
 import { QuoteCard } from '..'
 import { Quote, SuggestedQuote } from '../../types'
-import { useSearchFilter } from '../../utils'
+import { searchFilter } from '../../utils'
 
 type QuotesListProps = {
   quotes: Array<Quote>
@@ -20,16 +20,14 @@ export const QuotesList: FC<QuotesListProps> = ({
   changeSuggested,
   deleteQuote,
 }) => {
-  const { searchFilter } = useSearchFilter()
-
-  const filteredQuotes = useMemo<Array<Quote>>(() => searchFilter(quotes, search), [quotes, search, searchFilter])
+  const filteredQuotes = useMemo<Array<Quote>>(() => searchFilter(quotes, search), [quotes, search])
   const showSuggested = useMemo<boolean>(() => {
     if (suggestedQuote) {
       const { quote: content, author } = suggestedQuote
       return !!searchFilter([{ content, author }], search).length
     }
     return false
-  }, [search, suggestedQuote, searchFilter])
+  }, [search, suggestedQuote])
 
   const copyQuote = useCallback((content: string, author?: string | null): void => {
     const authorText = author ? `\n(${author})` : ''

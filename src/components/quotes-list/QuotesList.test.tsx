@@ -43,12 +43,10 @@ vi.mock('../quote-card/QuoteCard', () => ({
   },
 }))
 
-const searchFilter = vi.fn((quotes: Array<Quote>) => quotes)
+const searchFilter = vi.hoisted(() => vi.fn((quotes: Array<Quote>) => quotes))
 
 vi.mock('../../utils', () => ({
-  useSearchFilter: () => ({
-    searchFilter,
-  }),
+  searchFilter,
 }))
 
 const writeText = vi.fn()
