@@ -109,7 +109,7 @@ export const App: FC = () => {
     <>
       <main>
         <Header onLogout={logout} />
-        <SearchBar onSearch={(search) => setSearch(search)} />
+        <SearchBar onSearch={setSearch} />
         <Button onClick={() => setAddMode(true)} label="Add Quote" icon="add" />
         <QuotesList
           quotes={quotes}
