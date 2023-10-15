@@ -105,12 +105,18 @@ export const App: FC = () => {
     }
   }, [])
 
+  const fireAddMode = useCallback((): void => setAddMode(true), [])
+
+  const removeAddMode = useCallback((): void => setAddMode(false), [])
+
+  const dismissToast = useCallback((): void => setToast(undefined), [])
+
   return (
     <>
       <main>
         <Header onLogout={logout} />
         <SearchBar onSearch={setSearch} />
-        <Button onClick={() => setAddMode(true)} label="Add Quote" icon="add" />
+        <Button onClick={fireAddMode} label="Add Quote" icon="add" />
         <QuotesList
           quotes={quotes}
           search={search}
@@ -120,9 +126,9 @@ export const App: FC = () => {
           deleteQuote={deleteQuote}
         />
       </main>
-      {addMode && <AddModal onCancel={() => setAddMode(false)} onConfirm={addQuote} />}
+      {addMode && <AddModal onCancel={removeAddMode} onConfirm={addQuote} />}
       {showSpinner && <Spinner />}
-      {toast && <Toast {...toast} onDismiss={() => setToast(undefined)} />}
+      {toast && <Toast {...toast} onDismiss={dismissToast} />}
     </>
   )
 }

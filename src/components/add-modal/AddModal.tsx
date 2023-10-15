@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { ChangeEvent, FC, useCallback, useState } from 'react'
 import { Button } from '..'
 import { CreateQuoteInput } from '../../types'
 
@@ -10,6 +10,21 @@ type AddModalProps = {
 export const AddModal: FC<AddModalProps> = ({ onCancel, onConfirm }) => {
   const [content, setContent] = useState<string>('')
   const [author, setAuthor] = useState<string>('')
+
+  const onContentChange = useCallback(
+    ({ target: { value } }: ChangeEvent<HTMLTextAreaElement>): void => setContent(value),
+    [],
+  )
+
+  const onAuthorChange = useCallback(
+    ({ target: { value } }: ChangeEvent<HTMLInputElement>): void => setAuthor(value),
+    [],
+  )
+
+  const onConfirmClick = useCallback(
+    (): void => onConfirm({ content, author: author.trim() ? author : null }),
+    [content, author, onConfirm],
+  )
 
   return (
     <article className="add-modal" data-testid="add-modal">
@@ -24,7 +39,7 @@ export const AddModal: FC<AddModalProps> = ({ onCancel, onConfirm }) => {
           id="add-form-content"
           placeholder="Write or paste your quote here..."
           value={content}
-          onChange={({ target: { value } }) => setContent(value)}
+          onChange={onContentChange}
         />
         <label htmlFor="add-form-author">Author</label>
         <input
@@ -32,7 +47,7 @@ export const AddModal: FC<AddModalProps> = ({ onCancel, onConfirm }) => {
           placeholder="Write or paste the author here..."
           type="text"
           value={author}
-          onChange={({ target: { value } }) => setAuthor(value)}
+          onChange={onAuthorChange}
         />
       </form>
       <div className="add-modal__actions">
@@ -49,7 +64,7 @@ export const AddModal: FC<AddModalProps> = ({ onCancel, onConfirm }) => {
           label="Add"
           icon="check_circle"
           disabled={!content.trim()}
-          onClick={() => onConfirm({ content, author: author.trim() ? author : null })}
+          onClick={onConfirmClick}
         />
       </div>
     </article>

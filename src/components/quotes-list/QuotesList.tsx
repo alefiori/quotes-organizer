@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo } from 'react'
-import { QuoteCard } from '..'
+import { QuoteCard, QuoteCardActions } from '..'
 import { Quote, SuggestedQuote } from '../../types'
 import { searchFilter } from '../../utils'
 
@@ -34,6 +34,23 @@ export const QuotesList: FC<QuotesListProps> = ({
     navigator.clipboard.writeText(`${content}${authorText}`)
   }, [])
 
+  const suggestedQuoteActions = useMemo(
+    (): QuoteCardActions => ({
+      onAdd: () => addSuggested(suggestedQuote!),
+      onCopy: () => copyQuote(suggestedQuote!.quote, suggestedQuote!.author),
+      onDelete: () => deleteQuote(suggestedQuote!),
+    }),
+    [suggestedQuote],
+  )
+
+  const quoteActions = useCallback(
+    (quote: Quote): QuoteCardActions => ({
+      onCopy: () => copyQuote(quote.content, quote.author),
+      onDelete: () => deleteQuote(quote),
+    }),
+    [],
+  )
+
   return (
     <section className="quotes-list">
       <h2 className="quotes-list__title">List of Quotes</h2>
@@ -44,22 +61,14 @@ export const QuotesList: FC<QuotesListProps> = ({
               <QuoteCard
                 content={suggestedQuote.quote}
                 author={suggestedQuote.author}
-                onAdd={() => {
-                  addSuggested(suggestedQuote)
-                }}
                 onChange={changeSuggested}
-                onCopy={() => copyQuote(suggestedQuote.quote, suggestedQuote.author)}
-                onDelete={() => deleteQuote(suggestedQuote)}
+                {...suggestedQuoteActions}
               />
             </li>
           )}
           {filteredQuotes.map((quote, index) => (
             <li key={index}>
-              <QuoteCard
-                {...quote}
-                onCopy={() => copyQuote(quote.content, quote.author)}
-                onDelete={() => deleteQuote(quote)}
-              />
+              <QuoteCard {...quote} {...quoteActions(quote)} />
             </li>
           ))}
         </ul>

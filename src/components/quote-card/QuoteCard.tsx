@@ -1,13 +1,16 @@
 import { FC } from 'react'
 
-type QuoteCardProps = {
-  author?: string | null
-  content: string
+export type QuoteCardActions = {
   onAdd?: () => void
   onChange?: () => void
   onCopy: () => void
   onDelete: () => void
 }
+
+type QuoteCardProps = {
+  author?: string | null
+  content: string
+} & QuoteCardActions
 
 export const QuoteCard: FC<QuoteCardProps> = ({ author, content, onAdd, onChange, onCopy, onDelete }) => {
   return (
